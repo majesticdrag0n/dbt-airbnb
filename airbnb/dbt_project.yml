@@ -29,6 +29,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # In this example config, we tell dbt to build all models in the example/
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
+# Configuring models
 models:
   airbnb:
     +materialized: view
@@ -36,7 +37,10 @@ models:
       +materialized: table
     src:
       +materialized: ephemeral
-data_tests:
-  +store_failures: true
-  +schema: _test_failures
+
+# Correctly configured global test properties
+tests:
+  airbnb:
+    +store_failures: true
+    +schema: _test_failures
 
