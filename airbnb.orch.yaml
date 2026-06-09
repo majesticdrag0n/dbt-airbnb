@@ -1,0 +1,105 @@
+type: "orchestration"
+version: "1.0"
+pipeline:
+  components:
+    Start:
+      type: "start"
+      transitions:
+        unconditional:
+        - "dbt debug"
+      parameters:
+        componentName: "Start"
+    dbt test:
+      type: "commands-for-dbt-core-v2"
+      parameters:
+        componentName: "dbt test"
+        dbtCoreVersion: "1.10"
+        dbtProjectLocation: "Current project"
+        dbtProject: "airbnb"
+        dbtCommand: "dbt test"
+        mapDbtEnvironmentVariables:
+        globalProfileConfig:
+        profileOutputsConfig:
+      postProcessing:
+        updateOutputMessage:
+        updateScalarVariables:
+        updateGridVariables:
+    dbt run:
+      type: "commands-for-dbt-core-v2"
+      transitions:
+        success:
+        - "dbt test"
+        - "dbt snapshot"
+      parameters:
+        componentName: "dbt run"
+        dbtCoreVersion: "1.10"
+        dbtProjectLocation: "Current project"
+        dbtProject: "airbnb"
+        dbtCommand: "dbt run"
+        mapDbtEnvironmentVariables:
+        globalProfileConfig:
+        profileOutputsConfig:
+      postProcessing:
+        updateOutputMessage:
+        updateScalarVariables:
+        updateGridVariables:
+    dbt debug:
+      type: "commands-for-dbt-core-v2"
+      transitions:
+        success:
+        - "dbt run"
+      parameters:
+        componentName: "dbt debug"
+        dbtCoreVersion: "1.9"
+        dbtProjectLocation: "Current project"
+        dbtProject: "airbnb"
+        dbtCommand: "dbt debug"
+        mapDbtEnvironmentVariables:
+        globalProfileConfig:
+        profileOutputsConfig:
+      postProcessing:
+        updateOutputMessage:
+        updateScalarVariables:
+        updateGridVariables:
+    dbt snapshot:
+      type: "commands-for-dbt-core-v2"
+      parameters:
+        componentName: "dbt snapshot"
+        dbtCoreVersion: "1.9"
+        dbtProjectLocation: "Current project"
+        dbtProject: "airbnb"
+        dbtCommand: "dbt snapshot"
+        mapDbtEnvironmentVariables:
+        globalProfileConfig:
+        profileOutputsConfig:
+      postProcessing:
+        updateOutputMessage:
+        updateScalarVariables:
+        updateGridVariables:
+design:
+  components:
+    Start:
+      position:
+        x: -380
+        "y": 0
+      tempMetlId: 1
+    dbt test:
+      position:
+        x: -40
+        "y": 50
+      tempMetlId:
+    dbt run:
+      position:
+        x: -190
+        "y": -10
+      tempMetlId:
+    dbt debug:
+      position:
+        x: -300
+        "y": -70
+      tempMetlId:
+    dbt snapshot:
+      position:
+        x: -30
+        "y": -70
+      tempMetlId:
